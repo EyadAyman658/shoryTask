@@ -1,0 +1,8 @@
+{
+  "Landing": {
+    "title": "Home page",
+    "image": "/public/logo.png",
+    "description": "shory landing page",
+    "schema": "/"
+  }
+}
