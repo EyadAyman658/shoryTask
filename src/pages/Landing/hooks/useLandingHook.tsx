@@ -1,6 +1,5 @@
-import React, { createContext, useCallback, useEffect, useState } from "react";
+import React, { createContext, useCallback, useState } from "react";
 import { toast } from "react-toastify";
-import Configuration from "../../../services/Configuration";
 import useApi from "../../../services/useApiFetching";
 import { LandingInterface, defaultState ,LandingProviderProps} from "./index.interface";
 
@@ -16,19 +15,16 @@ const LandingProvider: React.FC<LandingProviderProps> = ({ children }) =>
 
   const { getRequest } = useApi();
 
-  const [selectedMovie, setSelectedMovie] = useState(
-    defaultState.selectedMovie
-  );
-  const [movieInfo, setMovieInfo] = useState(defaultState.movieInfo);
+  const [selectedMovie, setSelectedMovie] = useState<any>(defaultState.selectedMovie);
   const [loadingMovies, setloadingMovies] = useState(
     defaultState.loadingMovies
   );
   const [heroInput, setheroInput] = useState(defaultState.heroInput);
   const [moviesList, setMoviesList] = useState(defaultState.moviesList);
-
   const [selectedSuperHero,setSelectedSuperHero]=useState<string>('')
-
+  const [loadingSelectedMovie,setLoadingloadingSelectedMovie]=useState(defaultState.loadingSelectedMovie)
   const [step,setSteps]=useState<any>(defaultState.step)
+
 
   const handleSearchValueChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,18 +33,19 @@ const LandingProvider: React.FC<LandingProviderProps> = ({ children }) =>
     []
   );
 
-  
-
   const superHeroList = useCallback(
      (search:string) => {
        if(heroInput==='')   return superheroNames
        else  return superheroNames.filter(superhero => superhero?.name.toLowerCase().includes(search.toLowerCase()));
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [heroInput]
   );
 
   const handleShowMovies=useCallback(async()=>{
-    let res = await getRequest(`?s=${selectedSuperHero}&apikey=4f5efa4d`, true);
+    setloadingMovies(true)
+    //@ts-ignore
+    let res = await getRequest(`?s=${selectedSuperHero?.name}&apikey=4f5efa4d`, true);
       if(res?.Response==='False'){
         toast.error(res.data, {
           position: toast.POSITION.TOP_CENTER,
@@ -62,45 +59,72 @@ const LandingProvider: React.FC<LandingProviderProps> = ({ children }) =>
         });
         setMoviesList([])
       }
-
       else{
         setMoviesList(res?.Search)
       }
+      setloadingMovies(false)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[selectedSuperHero])
 
+
  const handleSelectSuperHero=useCallback((superHero:any)=>{
-  let name=superHero.name   
-  setSelectedSuperHero(name)
+  setSelectedSuperHero(superHero)
  },[])
   
   const handleConfirmSuperHero=useCallback((event:any)=>{
    event.preventDefault()
    setSteps(2)
-  },[])
+   handleShowMovies()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[selectedSuperHero])
 
-  const handleSelectedMovie=useCallback((movie:any)=>{
-      setSelectedMovie(movie)
+  const handleSelectedMovie=useCallback(async(movie:any)=>{
+    setLoadingloadingSelectedMovie(true)
+      let res = await getRequest(`?i=${movie.imdbID}&apikey=4f5efa4d`, true);
+      if(res?.Response==='False'){
+        toast.error(res.data, {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          // theme: "light",
+        });
+        setSelectedMovie({})
+      }
+      else{
+        setSelectedMovie(res)
+      }
+      setLoadingloadingSelectedMovie(false)
       setSteps(3)
-  },[])
-  useEffect(()=>{
-    if(step===2)handleShowMovies()
-  },[step])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[])
+
+    const handleRepeat=useCallback((type:string)=>{
+      if (type==='Hero') setSteps(1)
+      else  setSteps(2)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[step])
+  
   return (
     <LandingContext.Provider
       value={{
         // @ts-ignore
         selectedMovie,
-        movieInfo,
         moviesList,
         loadingMovies,
         heroInput,
+        loadingSelectedMovie,
         selectedSuperHero, 
         step,       
         superHeroList,
         handleSearchValueChange,
         handleSelectSuperHero,
         handleConfirmSuperHero,
-        handleSelectedMovie
+        handleSelectedMovie,
+        handleRepeat
       }}
     >
       {children}

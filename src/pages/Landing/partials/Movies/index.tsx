@@ -2,7 +2,7 @@ import { memo, useMemo } from "react";
 import { useLandingContext } from "../../hooks/useLandingHook";
 import { useStyles } from "./style";
 const Movies = () => {
-  const { selectedMovie, moviesList, handleSelectedMovie } =
+  const {  moviesList, handleSelectedMovie,loadingMovies } =
     useLandingContext();
   const classes = useStyles();
   const handleSuperHeroList = useMemo(
@@ -14,11 +14,7 @@ const Movies = () => {
             onClick={() => handleSelectedMovie(movie)}
             key={movie.id || index}
           >
-            <p
-              className={
-                selectedMovie === movie.Title ? classes.selectedText : ""
-              }
-            >
+            <p>
               {movie.Title}
             </p>
             <img
@@ -29,8 +25,10 @@ const Movies = () => {
         ))}
       </ul>
     ),
-    [moviesList, selectedMovie]
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  [moviesList,handleSelectedMovie]
   );
+  if (loadingMovies) return <div> Loading</div>
   return <section className={classes.movieWrapper}>{handleSuperHeroList}</section>;
 };
 export default memo(Movies);

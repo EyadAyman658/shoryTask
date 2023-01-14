@@ -2,11 +2,14 @@ import { makeStyles } from "@material-ui/core/styles";
 export const useStyles = makeStyles((theme: any) => ({
   pageWrapper: {
     width: "100vw",
-    height:'100vh',
+    minHeight:'100vh',
     display:'flex',
     flexWrap:'wrap',
     flexDirection:'column',
-    padding:'20px'
+    margin:'auto',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+    },
   },
 
 }));

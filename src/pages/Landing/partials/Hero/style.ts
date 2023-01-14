@@ -2,13 +2,14 @@ import { makeStyles } from "@material-ui/core/styles";
 export const useStyles = makeStyles((theme: any) => ({
   heroWrapper: {
     width:'100%',
+    padding:'20px'
   },
   heroContent:{
     width:'inherit',
     display:'flex',
     alignItems:'center',
     '& button':{
-      margin:'10px'
+      margin:'10px',
     }
   },
   heroList: {
@@ -33,8 +34,13 @@ selectedText: {
     color: 'green',
 },
 actionWrapper:{
-  width:'100%',
-  alignItems:'flex-end'
+  backgroundColor:'Green',
+  color:'#fff',
+  '&:hover':{
+    opacity:0.8,
+    backgroundColor:'Green',
+
+  }
 }
   
 }));

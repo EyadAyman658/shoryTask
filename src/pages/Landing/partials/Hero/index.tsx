@@ -26,7 +26,7 @@ const Hero = () => {
             >
               <p
                 className={
-                  selectedSuperHero === hero.name ? classes.selectedText : ""
+                  selectedSuperHero.name === hero.name ? classes.selectedText : ""
                 }
               >
                 {hero.name}
@@ -35,7 +35,7 @@ const Hero = () => {
                 src={hero.image}
                 alt={hero.name}
                 className={
-                  selectedSuperHero === hero.name ? classes.selected : ""
+                  selectedSuperHero.name === hero.name ? classes.selected : ""
                 }
               />
             </li>
@@ -43,7 +43,8 @@ const Hero = () => {
         }
       </ul>
     ),
-    [superHeroList, heroInput, selectedSuperHero]
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+    [superHeroList, heroInput, selectedSuperHero,handleSelectSuperHero]
   );
   return (
     <section className={classes.heroWrapper}>
@@ -59,14 +60,14 @@ const Hero = () => {
         />
       </div>
       {handleSuperHeroList}
-      <div>
         <Button
+         className={classes.actionWrapper}
           variant="contained"
           type="submit"
+          disabled={Object.keys(selectedSuperHero).length===0}
           children={"Submit "}
           onClick={handleConfirmSuperHero}
         />
-      </div>
     </section>
   );
 };
