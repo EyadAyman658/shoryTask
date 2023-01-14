@@ -10,6 +10,7 @@ export interface LandingInterface {
   handleSearchValueChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSelectSuperHero?: Function;
   handleConfirmSuperHero?: (e:any) => void;
+  handleSelectedMovie?:(movie:any)=>void
 }
 
 export const defaultState = {

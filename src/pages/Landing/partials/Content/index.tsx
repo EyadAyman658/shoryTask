@@ -8,9 +8,9 @@ const Content = () => {
     case 1:
       return <Hero/>;
     case 2:
-      return <MovieDescription/>
+      return <Movies/>
     case 3:
-     return <Movies/>
+     return <MovieDescription/>
     default:<></>
       break;
   }

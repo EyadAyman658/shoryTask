@@ -49,7 +49,7 @@ const LandingProvider: React.FC<LandingProviderProps> = ({ children }) =>
 
   const handleShowMovies=useCallback(async()=>{
     let res = await getRequest(`?s=${selectedSuperHero}&apikey=4f5efa4d`, true);
-      if(res.data.Response==='False'){
+      if(res?.Response==='False'){
         toast.error(res.data, {
           position: toast.POSITION.TOP_CENTER,
           autoClose: 5000,
@@ -64,7 +64,7 @@ const LandingProvider: React.FC<LandingProviderProps> = ({ children }) =>
       }
 
       else{
-        setMoviesList(res.data.Search)
+        setMoviesList(res?.Search)
       }
   },[selectedSuperHero])
 
@@ -78,7 +78,9 @@ const LandingProvider: React.FC<LandingProviderProps> = ({ children }) =>
    setSteps(2)
   },[])
 
-  const handleSelectredMovie=useCallback(()=>{
+  const handleSelectedMovie=useCallback((movie:any)=>{
+      setSelectedMovie(movie)
+      setSteps(3)
   },[])
   useEffect(()=>{
     if(step===2)handleShowMovies()
@@ -97,7 +99,8 @@ const LandingProvider: React.FC<LandingProviderProps> = ({ children }) =>
         superHeroList,
         handleSearchValueChange,
         handleSelectSuperHero,
-        handleConfirmSuperHero
+        handleConfirmSuperHero,
+        handleSelectedMovie
       }}
     >
       {children}
