@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import { SEO } from "../../component/Seo/seo";
 import { NamedRoutes } from "../../routes/index";
 import meta from "../../utils/pages-meta.json";
-import {MovieDescription,Movies,Hero} from './partials/index'
+import Content from './partials/Content'
 import { useStyles } from "./style";
 import {LandingProvider} from './hooks/useLandingHook'
 const Landing=()=>{
@@ -18,14 +18,10 @@ const Landing=()=>{
       />
     <div className={classes.pageWrapper}>
     <LandingProvider>
-    <Hero/>
-      {/* <Movies/>
-      <MovieDescription/> */}
+      <Content/>
     </LandingProvider>
    
     </div>
-      {/* <Movies/>
-      <MovieDescription/> */}
     </Fragment>
    )
 }
